@@ -1,0 +1,120 @@
+// controller.tv - test vectors for the multicycle controller (design project, Part D).
+// Read by controller_tb.sv with $readmemb. One vector per clock cycle, in this order:
+//
+//   op[6:0]_funct3[2:0]_funct7b5_Zero__ImmSrc[1:0]_ALUSrcA[1:0]_ALUSrcB[1:0]_ResultSrc[1:0]_AdrSrc_
+//                                      ALUControl[2:0]_IRWrite_PCWrite_RegWrite_MemWrite
+//
+// The four fields before the double underscore are controller inputs. The ten fields after it
+// are the outputs expected in that cycle. An x is a don't-care that the testbench skips.
+// Each comment gives the vector number that the testbench reports and the state of Figure 6.
+// The controller must be in Fetch when reset is released, and each instruction ends by
+// returning to Fetch, so the vectors of one instruction follow the last vector of the one before.
+
+// ---- R-type instructions take four cycles; only ALUControl in ExecuteR differs ----
+
+// add
+0110011_000_0_0__xx_00_10_10_0_000_1_1_0_0 //  0  S0: Fetch
+0110011_000_0_0__xx_01_01_00_0_000_0_0_0_0 //  1  S1: Decode
+0110011_000_0_0__xx_10_00_00_0_000_0_0_0_0 //  2  S6: ExecuteR
+0110011_000_0_0__xx_00_00_00_0_000_0_0_1_0 //  3  S7: ALUWB
+
+// sub
+0110011_000_1_0__xx_00_10_10_0_000_1_1_0_0 //  4  S0: Fetch
+0110011_000_1_0__xx_01_01_00_0_000_0_0_0_0 //  5  S1: Decode
+0110011_000_1_0__xx_10_00_00_0_001_0_0_0_0 //  6  S6: ExecuteR
+0110011_000_1_0__xx_00_00_00_0_000_0_0_1_0 //  7  S7: ALUWB
+
+// and
+0110011_111_0_0__xx_00_10_10_0_000_1_1_0_0 //  8  S0: Fetch
+0110011_111_0_0__xx_01_01_00_0_000_0_0_0_0 //  9  S1: Decode
+0110011_111_0_0__xx_10_00_00_0_010_0_0_0_0 // 10  S6: ExecuteR
+0110011_111_0_0__xx_00_00_00_0_000_0_0_1_0 // 11  S7: ALUWB
+
+// or
+0110011_110_0_0__xx_00_10_10_0_000_1_1_0_0 // 12  S0: Fetch
+0110011_110_0_0__xx_01_01_00_0_000_0_0_0_0 // 13  S1: Decode
+0110011_110_0_0__xx_10_00_00_0_011_0_0_0_0 // 14  S6: ExecuteR
+0110011_110_0_0__xx_00_00_00_0_000_0_0_1_0 // 15  S7: ALUWB
+
+// slt
+0110011_010_0_0__xx_00_10_10_0_000_1_1_0_0 // 16  S0: Fetch
+0110011_010_0_0__xx_01_01_00_0_000_0_0_0_0 // 17  S1: Decode
+0110011_010_0_0__xx_10_00_00_0_101_0_0_0_0 // 18  S6: ExecuteR
+0110011_010_0_0__xx_00_00_00_0_000_0_0_1_0 // 19  S7: ALUWB
+
+// ---- I-type ALU instructions take four cycles ----
+
+// addi
+0010011_000_0_0__00_00_10_10_0_000_1_1_0_0 // 20  S0: Fetch
+0010011_000_0_0__00_01_01_00_0_000_0_0_0_0 // 21  S1: Decode
+0010011_000_0_0__00_10_01_00_0_000_0_0_0_0 // 22  S8: ExecuteI
+0010011_000_0_0__00_00_00_00_0_000_0_0_1_0 // 23  S7: ALUWB
+
+// addi with a negative immediate (Instr[30] = 1 must not select subtract)
+0010011_000_1_0__00_00_10_10_0_000_1_1_0_0 // 24  S0: Fetch
+0010011_000_1_0__00_01_01_00_0_000_0_0_0_0 // 25  S1: Decode
+0010011_000_1_0__00_10_01_00_0_000_0_0_0_0 // 26  S8: ExecuteI
+0010011_000_1_0__00_00_00_00_0_000_0_0_1_0 // 27  S7: ALUWB
+
+// slti
+0010011_010_0_0__00_00_10_10_0_000_1_1_0_0 // 28  S0: Fetch
+0010011_010_0_0__00_01_01_00_0_000_0_0_0_0 // 29  S1: Decode
+0010011_010_0_0__00_10_01_00_0_101_0_0_0_0 // 30  S8: ExecuteI
+0010011_010_0_0__00_00_00_00_0_000_0_0_1_0 // 31  S7: ALUWB
+
+// ori
+0010011_110_0_0__00_00_10_10_0_000_1_1_0_0 // 32  S0: Fetch
+0010011_110_0_0__00_01_01_00_0_000_0_0_0_0 // 33  S1: Decode
+0010011_110_0_0__00_10_01_00_0_011_0_0_0_0 // 34  S8: ExecuteI
+0010011_110_0_0__00_00_00_00_0_000_0_0_1_0 // 35  S7: ALUWB
+
+// andi
+0010011_111_0_0__00_00_10_10_0_000_1_1_0_0 // 36  S0: Fetch
+0010011_111_0_0__00_01_01_00_0_000_0_0_0_0 // 37  S1: Decode
+0010011_111_0_0__00_10_01_00_0_010_0_0_0_0 // 38  S8: ExecuteI
+0010011_111_0_0__00_00_00_00_0_000_0_0_1_0 // 39  S7: ALUWB
+
+// ---- lw takes five cycles ----
+
+// lw
+0000011_010_0_0__00_00_10_10_0_000_1_1_0_0 // 40  S0: Fetch
+0000011_010_0_0__00_01_01_00_0_000_0_0_0_0 // 41  S1: Decode
+0000011_010_0_0__00_10_01_00_0_000_0_0_0_0 // 42  S2: MemAdr
+0000011_010_0_0__00_00_00_00_1_000_0_0_0_0 // 43  S3: MemRead
+0000011_010_0_0__00_00_00_01_0_000_0_0_1_0 // 44  S4: MemWB
+
+// ---- sw takes four cycles ----
+
+// sw
+0100011_010_0_0__01_00_10_10_0_000_1_1_0_0 // 45  S0: Fetch
+0100011_010_0_0__01_01_01_00_0_000_0_0_0_0 // 46  S1: Decode
+0100011_010_0_0__01_10_01_00_0_000_0_0_0_0 // 47  S2: MemAdr
+0100011_010_0_0__01_00_00_00_1_000_0_0_0_1 // 48  S5: MemWrite
+
+// ---- beq takes three cycles; PCWrite in the BEQ state follows Zero ----
+
+// beq, not taken (Zero = 0 in the BEQ state)
+1100011_000_0_0__10_00_10_10_0_000_1_1_0_0 // 49  S0: Fetch
+1100011_000_0_0__10_01_01_00_0_000_0_0_0_0 // 50  S1: Decode
+1100011_000_0_0__10_10_00_00_0_001_0_0_0_0 // 51  S10: BEQ
+
+// beq, taken (Zero = 1 in the BEQ state)
+1100011_000_0_0__10_00_10_10_0_000_1_1_0_0 // 52  S0: Fetch
+1100011_000_0_0__10_01_01_00_0_000_0_0_0_0 // 53  S1: Decode
+1100011_000_0_1__10_10_00_00_0_001_0_1_0_0 // 54  S10: BEQ
+
+// ---- jal takes four cycles ----
+
+// jal
+1101111_000_0_0__11_00_10_10_0_000_1_1_0_0 // 55  S0: Fetch
+1101111_000_0_0__11_01_01_00_0_000_0_0_0_0 // 56  S1: Decode
+1101111_000_0_0__11_01_10_00_0_000_0_1_0_0 // 57  S9: JAL
+1101111_000_0_0__11_00_00_00_0_000_0_0_1_0 // 58  S7: ALUWB
+
+// ---- Zero is ignored except in the BEQ state ----
+
+// sub with Zero = 1 in every cycle (Zero must not write the PC outside the BEQ state)
+0110011_000_1_1__xx_00_10_10_0_000_1_1_0_0 // 59  S0: Fetch
+0110011_000_1_1__xx_01_01_00_0_000_0_0_0_0 // 60  S1: Decode
+0110011_000_1_1__xx_10_00_00_0_001_0_0_0_0 // 61  S6: ExecuteR
+0110011_000_1_1__xx_00_00_00_0_000_0_0_1_0 // 62  S7: ALUWB
