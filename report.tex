@@ -7,4 +7,63 @@
 
   \maketitle
 
+  \section{Session 1}
+
+    \begin{verbatim}
+    addi x7, x3, -9
+    \end{verbatim}
+
+    I-Type format:
+
+    \{imm\}\{rs1\}\{funct3\}\{rd\}\{op\}
+
+    imm = $111111110111$
+
+    rs1 = $00011$
+
+    funct3 = $000$
+
+    rd = $00111$
+
+    op = $0010011$
+
+    Machine Code:
+    11111111011100011000001110010011
+
+    Machine Code Hex:
+    0xFF718393
+
+
+
+    \begin{verbatim}
+    sw x7, 84(x3)
+    \end{verbatim}
+
+    S-Type format:
+
+    \{imm_7\}\{rs2\}\{rs1\}\{funct3\}\{imm_5\}\{op\}
+
+    $84$ = $000001010100$
+
+    imm_7 = $0000010$
+
+    rs2 = $00111$
+
+    rs1 = $00011$
+
+    funct3 = $010$
+
+    imm_5 = $10100$
+
+    op = $0100011$
+
+    Machine Code:
+    00000100011100011010101000100011
+
+    Machine Code Hex:
+    0x0471AA23
+
+
+
+
 \end{document}
