@@ -23,7 +23,7 @@ module alu (
     logic [31:0] sum;                   // adder output
     logic        overflow;              // signed overflow of the adder
 
-    assign condinvb = (alucontrol == 3'b001) ? -b : b;
+    assign condinvb = (alucontrol == 3'b001) ? 'b1 ^ b + 1 : b;
     assign sum      = a + condinvb;
     assign overflow = ~alucontrol[1] & ~(alucontrol[0] | b[31] | a[31]) & (a[31] | sum[31]);
 
