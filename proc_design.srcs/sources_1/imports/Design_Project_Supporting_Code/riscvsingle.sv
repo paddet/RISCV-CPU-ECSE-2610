@@ -38,10 +38,21 @@ module top (
 
     // TODO: instruction memory. Instantiate rom_imem from Lab 8 with 64 words and FILE = "riscvtest.hex".
     //       PC is its address and Instr is its read data.
+    rom_imem imem #(FILE="riscvtest.hex") (
+        .addr   (PC),
+        .rd     (Instr)
+    );
 
     // TODO: data memory. Instantiate ram_sp from Lab 8 as 64 words of 32 bits.
     //       DataAdr is a byte address and the memory needs a word index (Lab 8, Part B).
     //       It writes WriteData when MemWrite is 1, and its read data is ReadData.
+    ram_sp ram (
+        .clk    (clk),
+        .we     (MemWrite),
+        .addr   (DataAdr),
+        .wd     (WriteData),
+        .rd     (ReadData)
+    );
 
 endmodule
 
@@ -153,11 +164,11 @@ module maindec (
         case (op)
             //                         RegWrite_ImmSrc_ALUSrc_MemWrite_ResultSrc_Branch_ALUOp_Jump
             7'b0000011: controls = 11'b1_00_1_0_01_0_00_0;              // lw
-            7'b0100011: controls = 11'b0_01_1_1_00_0_00_0;              // sw
-            7'b0110011: controls = /* TODO */;              // R-type
-            7'b1100011: controls = /* TODO */;              // beq
-            7'b0010011: controls = /* TODO */;              // I-type ALU
-            7'b1101111: controls = /* TODO */;              // jal
+            7'b0100011: controls = 11'b0_01_1_1_xx_0_00_0;              // sw
+            7'b0110011: controls = 11'b1_xx_0_0_00_0_10_0;              // R-type
+            7'b1100011: controls = 11'b0_10_0_0_xx_1_01_0;              // beq
+            7'b0010011: controls = 11'b1_00_1_0_00_0_10_0;              // I-type ALU
+            7'b1101111: controls = 11'b1_11_x_0_10_0_xx_1;              // jal
             default:    controls = 11'bx_xx_x_x_xx_x_xx_x;              // instruction not implemented
         endcase
 

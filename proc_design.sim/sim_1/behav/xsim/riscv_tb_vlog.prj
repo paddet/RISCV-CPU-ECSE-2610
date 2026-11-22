@@ -1,0 +1,17 @@
+# compile verilog/system verilog design source files
+sv xil_defaultlib  --include "../../../../../../../../opt/Xilinx/2025.1/data/rsb/busdef" \
+"../../../../proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/adder.sv" \
+"../../../../proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/alu.sv" \
+"../../../../proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/controller.sv" \
+"../../../../proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/extend.sv" \
+"../../../../proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/mux2.sv" \
+"../../../../proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/mux3.sv" \
+"../../../../proc_design.srcs/sources_1/new/ram_sp.sv" \
+"../../../../proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/riscvsingle.sv" \
+"../../../../proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/riscv_tb.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort
