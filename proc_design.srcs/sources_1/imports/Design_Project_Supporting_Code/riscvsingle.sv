@@ -38,7 +38,7 @@ module top (
 
     // TODO: instruction memory. Instantiate rom_imem from Lab 8 with 64 words and FILE = "riscvtest.hex".
     //       PC is its address and Instr is its read data.
-    rom_imem imem #(FILE="riscvtest.hex") (
+    rom_imem #(.FILE("riscvtest.hex")) imem (
         .addr   (PC),
         .rd     (Instr)
     );
@@ -69,7 +69,7 @@ module riscvsingle (
     logic [1:0] ResultSrc, ImmSrc;
     logic [2:0] ALUControl;
 
-    controller c (
+    lcontroller c (
         .op         (Instr[6:0]),
         .funct3     (Instr[14:12]),
         .funct7b5   (Instr[30]),
@@ -103,7 +103,7 @@ module riscvsingle (
 
 endmodule
 
-module controller (
+module lcontroller (
     input  logic [6:0] op,
     input  logic [2:0] funct3,
     input  logic       funct7b5,

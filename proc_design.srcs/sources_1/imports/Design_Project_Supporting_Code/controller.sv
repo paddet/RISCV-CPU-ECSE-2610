@@ -57,7 +57,7 @@ module controller (
         .ImmSrc (ImmSrc)
     );
 
-    assign PCWrite = /* TODO */;            // the gates of Figure 5
+    assign PCWrite = Branch & Zero | PCUpdate;            // the gates of Figure 5
 
 endmodule
 

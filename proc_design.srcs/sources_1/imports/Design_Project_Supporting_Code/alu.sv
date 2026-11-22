@@ -23,7 +23,7 @@ module alu (
     logic [31:0] sum;                   // adder output
     logic        overflow;              // signed overflow of the adder
 
-    assign condinvb = (alucontrol == 3'b001) ? 'b1 ^ b + 1 : b;
+    assign condinvb = (alucontrol[0] == 1) ? ~b : b;
     assign sum      = a + condinvb;
     assign overflow = ~alucontrol[1] & ~(alucontrol[0] | b[31] | a[31]) & (a[31] | sum[31]);
 
@@ -33,7 +33,7 @@ module alu (
             3'b001:  result = sum;                              // subtract
             3'b010:  result = a & b;                            // and
             3'b011:  result = a | b;                            // or
-            3'b101:  result = overflow | sum[31];               // set less than
+            3'b101:  result = overflow ^ sum[31];               // set less than
             default: result = 32'bx;                            // codes that are not used
         endcase
 
