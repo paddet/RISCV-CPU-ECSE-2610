@@ -16,13 +16,14 @@
 // Instructions: lw, sw, add, sub, and, or, slt, addi, andi, ori, slti, beq, jal.
 
 module top (
+    output logic [31:0] Instr, ReadData,                   // tapped by Akhil for testing
     input  logic        clk, reset,
     output logic [31:0] WriteData, DataAdr,         // data-memory interface, tapped out for testing
     output logic        MemWrite,
     output logic [31:0] PC                          // tapped out for the board display in Part F
 );
 
-    logic [31:0] Instr, ReadData;
+    ;
 
     // processor: controller and datapath
     riscvsingle rvsingle (
@@ -38,7 +39,10 @@ module top (
 
     // TODO: instruction memory. Instantiate rom_imem from Lab 8 with 64 words and FILE = "riscvtest.hex".
     //       PC is its address and Instr is its read data.
-    rom_imem #(.FILE("riscvtest.hex")) imem (
+    rom_imem #(
+        .FILE("riscvtest.hex"),
+        .WORDS(64)
+    ) imem (
         .addr   (PC),
         .rd     (Instr)
     );
@@ -46,7 +50,10 @@ module top (
     // TODO: data memory. Instantiate ram_sp from Lab 8 as 64 words of 32 bits.
     //       DataAdr is a byte address and the memory needs a word index (Lab 8, Part B).
     //       It writes WriteData when MemWrite is 1, and its read data is ReadData.
-    ram_sp ram (
+    ram_sp #(
+        .AW(6),
+        .DW(32)
+    ) ram (
         .clk    (clk),
         .we     (MemWrite),
         .addr   (DataAdr),
@@ -162,7 +169,7 @@ module maindec (
     // A don't-care (x) in the table may be written as x or as 0.
     always_comb
         case (op)
-            //                         RegWrite_ImmSrc_ALUSrc_MemWrite_ResultSrc_Branch_ALUOp_Jump
+            // RegWrite_ImmSrc_ALUSrc_MemWrite_ResultSrc_Branch_ALUOp_Jump
             7'b0000011: controls = 11'b1_00_1_0_01_0_00_0;              // lw
             7'b0100011: controls = 11'b0_01_1_1_xx_0_00_0;              // sw
             7'b0110011: controls = 11'b1_xx_0_0_00_0_10_0;              // R-type

@@ -2,7 +2,7 @@
 
 module rom_imem #(
     parameter int    WORDS = 64,
-    parameter string FILE  = "program.mem"
+    parameter string FILE  = "riscvtest.hex"
 ) (
     input  logic [31:0] addr,           // byte address, as a processor supplies it
     output logic [31:0] rd

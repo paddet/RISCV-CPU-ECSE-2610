@@ -23,6 +23,7 @@ module riscv_tb;
     // ---------------- signals ----------------
     logic        clk, reset;
     logic [31:0] WriteData, DataAdr, PC;
+    logic [31:0] Instr, ReadData;       // Added by Akhil
     logic        MemWrite;
     int          cycles = 0;            // clock cycles since reset was released
     logic        ok_seen = 1'b0;        // OK_DATA has been written to OK_ADDR
@@ -34,7 +35,9 @@ module riscv_tb;
         .WriteData (WriteData),
         .DataAdr   (DataAdr),
         .MemWrite  (MemWrite),
-        .PC        (PC)
+        .PC        (PC),
+        .Instr     (Instr),             // Added by Akhil
+        .ReadData  (ReadData)           // Added by Akhil
     );
 
     // ---------------- reset: held for the first two clock cycles ----------------
@@ -64,8 +67,10 @@ module riscv_tb;
                                  WriteData, DataAdr, cycles, OK_DATA, OK_ADDR);
                     $finish;
                 end
-                else if (DataAdr === OK_ADDR && WriteData === OK_DATA)
+                else if (DataAdr === OK_ADDR && WriteData === OK_DATA) begin
                     ok_seen = 1'b1;
+                    $display("ok seen");
+                end
                 else begin
                     $display("FAIL: Simulation failed. Wrote %h to address %h in clock cycle %0d (PC = %h).",
                              WriteData, DataAdr, cycles, PC);

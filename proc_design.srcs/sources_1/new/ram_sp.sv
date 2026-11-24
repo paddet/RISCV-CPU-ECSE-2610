@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
 module ram_sp #(
-    parameter int AW = 4,   // address width: 2**AW words
-    parameter int DW = 8    // data width
+    parameter int AW = 6,   // address width: 2**AW words
+    parameter int DW = 32   // data width
 ) (
     input  logic          clk,
     input  logic          we,
