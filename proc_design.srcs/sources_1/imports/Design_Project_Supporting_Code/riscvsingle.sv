@@ -23,8 +23,6 @@ module top (
     output logic [31:0] PC                          // tapped out for the board display in Part F
 );
 
-    ;
-
     // processor: controller and datapath
     riscvsingle rvsingle (
         .clk       (clk),
@@ -56,7 +54,7 @@ module top (
     ) ram (
         .clk    (clk),
         .we     (MemWrite),
-        .addr   (DataAdr),
+        .addr   (DataAdr[7:2]),
         .wd     (WriteData),
         .rd     (ReadData)
     );
@@ -189,8 +187,7 @@ module aludec (
     output logic [2:0] ALUControl
 );
 
-    logic RtypeSub;
-
+    logic  RtypeSub;
     assign RtypeSub = funct7b5 & opb5;      // true only for an R-type subtract
 
     always_comb

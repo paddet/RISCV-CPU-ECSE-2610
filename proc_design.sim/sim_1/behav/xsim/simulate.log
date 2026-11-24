@@ -1,3 +1,5 @@
 Time resolution is 1 ps
-FAIL: Simulation failed. Wrote fffffffb to address 00000060 in clock cycle 14 (PC = 00000034).
-$finish called at time : 155 ns : File "/home/ackle/Documents/RPI/CoCoOps ECSE 2610 Liu/proc_design/proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/riscv_tb.sv" Line 77
+ok seen
+PASS: Simulation succeeded. Wrote 25 to address 100 in clock cycle 18.
+$finish called at time : 195 ns : File "/home/ackle/Documents/RPI/CoCoOps ECSE 2610 Liu/proc_design/proc_design.srcs/sources_1/imports/Design_Project_Supporting_Code/riscv_tb.sv" Line 68
+INFO: xsimkernel Simulation Memory Usage: 483720 KB (Peak: 540992 KB), Simulation CPU Usage: 1280 ms
